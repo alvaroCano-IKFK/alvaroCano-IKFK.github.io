@@ -74,11 +74,11 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outlin
 }
 h1 {
   margin: 0; font-family: var(--display); font-stretch: 125%; font-weight: 800;
-  font-size: clamp(44px, 7vw, 84px); line-height: 0.95; letter-spacing: -0.02em; text-wrap: balance;
+  font-size: clamp(34px, 5vw, 58px); line-height: 1; letter-spacing: -0.02em; text-wrap: balance;
 }
 .role {
-  margin: 0; font-family: var(--display); font-stretch: 62%; font-weight: 600;
-  font-size: clamp(22px, 2.6vw, 30px); line-height: 1.15; text-transform: uppercase; letter-spacing: 0.04em;
+  margin: 0; font-family: var(--display); font-stretch: 75%; font-weight: 700;
+  font-size: clamp(34px, 5vw, 58px); line-height: 1; text-transform: uppercase; letter-spacing: 0.01em; text-wrap: balance;
 }
 .role span { color: var(--accent); }
 .lede { margin: 0; max-width: 34em; color: var(--muted); font-size: 17px; }
@@ -158,6 +158,7 @@ h3 { margin: 0; font-family: var(--display); font-stretch: 100%; font-weight: 70
 .chain span { padding: 3px 8px; border: 1px solid var(--line); border-radius: 3px; background: var(--surface); }
 .chain i { font-style: normal; color: var(--muted); }
 .modules { display: flex; flex-wrap: wrap; gap: 6px; }
+.src-link { font-size: 15px; font-weight: 500; color: var(--accent); text-underline-offset: 3px; }
 .modules span { font-family: var(--mono); font-size: 12px; padding: 3px 9px; border-radius: 999px; background: var(--viewport); }
 .label { font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); }
 
@@ -237,8 +238,8 @@ html { scroll-behavior: smooth; }
       <p class="lede">I build modular, guide-based autorig systems for Maya, written entirely in Python. Biped and quadruped rigs with a clean, matrix-based node graph, plus PySide2 tools that speed up the whole team.</p>
       <div class="actions">
         <a class="btn primary" href="#reel">Watch showreel</a>
-        <a class="btn" href="#" data-todo="cv">Download CV <span class="todo">add link</span></a>
-        <a class="btn" href="#" data-todo="github">GitHub <span class="todo">add link</span></a>
+        <a class="btn" href="Alvaro_Cano_CV.pdf" target="_blank" rel="noopener">View CV</a>
+        <a class="btn" href="https://github.com/alvaroCano-IKFK/La-monja-gitana-autorig" target="_blank" rel="noopener">Autorig on GitHub</a>
       </div>
     </div>
     <div class="viewport" aria-label="Interactive two-bone IK arm. Move the pointer over it to drag the wrist control.">
@@ -291,6 +292,7 @@ html { scroll-behavior: smooth; }
         <div class="modules">
           <span>Spine</span><span>Neck</span><span>Arm</span><span>Leg</span><span>Fingers</span><span>Toes</span><span>Eyes</span><span>Jaw</span><span>Mouth</span><span>Brows</span>
         </div>
+        <a class="src-link" href="https://github.com/alvaroCano-IKFK/La-monja-gitana-autorig" target="_blank" rel="noopener">View the autorig source code on GitHub ↗</a>
       </div>
       <div class="p-media">
         <div class="slot r169 wide"><strong>Image / GIF</strong>Main character rig in the viewport</div>
@@ -419,7 +421,7 @@ html { scroll-behavior: smooth; }
       </div>
       <div class="links">
         <a class="btn" href="#" data-todo="linkedin">LinkedIn <span class="todo">add link</span></a>
-        <a class="btn" href="#" data-todo="github">GitHub <span class="todo">add link</span></a>
+        <a class="btn" href="https://github.com/alvaroCano-IKFK" target="_blank" rel="noopener">GitHub</a>
         <a class="btn" href="#" data-todo="artstation">ArtStation <span class="todo">add link</span></a>
       </div>
     </div>
