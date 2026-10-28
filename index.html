@@ -122,6 +122,8 @@ h3 { margin: 0; font-family: var(--display); font-stretch: 100%; font-weight: 70
 }
 .slot strong { font-weight: 500; color: var(--fg); text-transform: uppercase; letter-spacing: 0.08em; font-size: 11px; }
 .r169 { aspect-ratio: 16 / 9; }
+.media { display: block; width: 100%; max-width: 100%; height: auto; object-fit: cover; border-radius: 6px; border: 1px solid var(--line); background: var(--viewport); }
+.media.contain { object-fit: contain; }
 .r43 { aspect-ratio: 4 / 3; }
 .todo {
   font-family: var(--mono); font-size: 11px; color: var(--muted); border: 1px dashed var(--line);
@@ -276,7 +278,7 @@ html { scroll-behavior: smooth; }
 
     <article class="project">
       <div class="p-text">
-        <div class="p-meta"><span class="p-role">Lead Rigger &amp; Tool Developer</span><span class="todo">add year</span></div>
+        <div class="p-meta"><span class="p-role">Lead Rigger &amp; Tool Developer</span><span>2026</span></div>
         <h3>La Monja Gitana</h3>
         <ul>
           <li>Supervised and organised the rigging department.</li>
@@ -295,15 +297,15 @@ html { scroll-behavior: smooth; }
         <a class="src-link" href="https://github.com/alvaroCano-IKFK/La-monja-gitana-autorig" target="_blank" rel="noopener">View the autorig source code on GitHub ↗</a>
       </div>
       <div class="p-media">
-        <div class="slot r169 wide"><strong>Image / GIF</strong>Main character rig in the viewport</div>
-        <div class="slot r43"><strong>Image / GIF</strong>Horse rig</div>
-        <div class="slot r43"><strong>Image / GIF</strong>Autorig UI</div>
+        <video class="media r169 wide" src="img/monjamainrig.mp4" autoplay muted loop playsinline preload="metadata" aria-label="Main character rig of La Monja Gitana in the Maya viewport"></video>
+        <img class="media r43" src="img/monjahorserig.gif" alt="Quadruped horse rig built with the autorig" loading="lazy">
+        <img class="media r43 contain" src="img/monjaautorigui.png" alt="PySide2 interface of the La Monja Gitana autorig" loading="lazy">
       </div>
     </article>
 
     <article class="project">
       <div class="p-text">
-        <div class="p-meta"><span class="p-role">Collaborator Rigger</span><span class="todo">add year</span></div>
+        <div class="p-meta"><span class="p-role">Collaborator Rigger</span><span>2026</span></div>
         <h3>Stigma</h3>
         <ul>
           <li>Crowd character rigs built on mGear.</li>
@@ -320,7 +322,7 @@ html { scroll-behavior: smooth; }
 
     <article class="project">
       <div class="p-text">
-        <div class="p-meta"><span class="p-role">Collaborator Rigger</span><span class="todo">add year</span></div>
+        <div class="p-meta"><span class="p-role">Collaborator Rigger</span><span>2026</span></div>
         <h3>Encore</h3>
         <ul>
           <li>Drum kit rig with deformers on the drum skins.</li>
@@ -328,7 +330,7 @@ html { scroll-behavior: smooth; }
         </ul>
       </div>
       <div class="p-media">
-        <div class="slot r169 wide"><strong>Image / GIF</strong>Drum kit rig</div>
+        <video class="media r169 wide" src="img/encoredrums.mp4" autoplay muted loop playsinline preload="metadata" aria-label="Drum kit rig for the short film Encore"></video>
       </div>
     </article>
   </section>
@@ -341,24 +343,19 @@ html { scroll-behavior: smooth; }
     </div>
     <div class="tools">
       <div class="tool">
-        <div class="slot r169"><strong>GIF</strong>Tool in use</div>
+        <img class="media r169" src="img/toolcoloroverride.gif" alt="Color Override Tool in use" loading="lazy">
         <h3>Color Override Tool</h3>
         <p>A 32-swatch palette that sets the override color on any selected control in one click.</p>
       </div>
       <div class="tool">
-        <div class="slot r169"><strong>GIF</strong>Tool in use</div>
+        <img class="media r169" src="img/toolrotationaxis.gif" alt="Toggle Rotation Axis tool in use" loading="lazy">
         <h3>Toggle Rotation Axis</h3>
         <p>Shows or hides local rotation axes across the selection to check joint orientation fast.</p>
       </div>
       <div class="tool">
-        <div class="slot r169"><strong>GIF</strong>Tool in use</div>
+        <video class="media r169" src="img/toollockhide.mp4" autoplay muted loop playsinline preload="metadata" aria-label="Lock and Hide Attributes tool in use"></video>
         <h3>Lock &amp; Hide Attributes</h3>
         <p>Locks and hides channels on controls in bulk so animators only see what they should key.</p>
-      </div>
-      <div class="tool">
-        <div class="slot r169"><strong>GIF</strong>Tool in use</div>
-        <h3>Playblast Overlay</h3>
-        <p>Layout playblasts with a custom burn-in and pipeline naming (<code>LMG_</code> prefix) applied automatically.</p>
       </div>
     </div>
   </section>
@@ -423,9 +420,8 @@ html { scroll-behavior: smooth; }
         <span class="copied" id="copied" hidden>Copied</span>
       </div>
       <div class="links">
-        <a class="btn" href="#" data-todo="linkedin">LinkedIn <span class="todo">add link</span></a>
+        <a class="btn" href="https://www.linkedin.com/in/%C3%A1lvaro-cano-pradillo-b965183b5/" target="_blank" rel="noopener">LinkedIn</a>
         <a class="btn" href="https://github.com/alvaroCano-IKFK" target="_blank" rel="noopener">GitHub</a>
-        <a class="btn" href="#" data-todo="artstation">ArtStation <span class="todo">add link</span></a>
       </div>
     </div>
   </section>
