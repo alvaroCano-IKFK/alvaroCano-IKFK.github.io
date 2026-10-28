@@ -1,0 +1,530 @@
+<title>Álvaro Cano Portfolio</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Álvaro Cano, rigger and tool developer. Modular autorig systems in Python for Maya.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one left-aligned column; hero splits text and a live IK "viewport"; projects read as rig breakdowns with image slots beside them. */
+:root {
+  --bg: #eceff3;
+  --surface: #f8f9fb;
+  --viewport: #dde2e9;
+  --fg: #141820;
+  --muted: #586273;
+  --line: #cfd5de;
+  --accent: #1d5bd0;     /* left-side control blue */
+  --ctl-r: #c93434;      /* right-side control red */
+  --ctl-c: #b98a00;      /* center control yellow */
+  --display: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --body: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #13161b; --surface: #1a1e25; --viewport: #1c2129; --fg: #e8ebf0; --muted: #9aa3b1;
+    --line: #2b313b; --accent: #6b9bf5; --ctl-r: #f07070; --ctl-c: #f0c64a; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #13161b; --surface: #1a1e25; --viewport: #1c2129; --fg: #e8ebf0; --muted: #9aa3b1;
+  --line: #2b313b; --accent: #6b9bf5; --ctl-r: #f07070; --ctl-c: #f0c64a; color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--body);
+  font-size: 16px;
+  line-height: 1.6;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  -webkit-font-smoothing: antialiased;
+}
+.page { max-width: 1120px; margin: 0 auto; display: flex; flex-direction: column; }
+a { color: inherit; }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 3px; }
+
+/* ---------- top bar ---------- */
+.bar {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+  padding-block: 22px; border-bottom: 1px solid var(--line);
+}
+.mark { font-family: var(--mono); font-size: 13px; letter-spacing: 0.02em; text-decoration: none; }
+.mark b { font-weight: 500; }
+.bar nav { display: flex; gap: 22px; flex-wrap: wrap; }
+.bar nav a { font-size: 14px; text-decoration: none; color: var(--muted); }
+.bar nav a:hover { color: var(--fg); }
+
+/* ---------- hero ---------- */
+.hero {
+  display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 48px; align-items: center;
+  padding-block: 64px 72px;
+}
+.hero-text { min-width: 0; display: flex; flex-direction: column; gap: 22px; }
+.eyebrow {
+  font-family: var(--mono); font-size: 12px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted);
+}
+h1 {
+  margin: 0; font-family: var(--display); font-stretch: 125%; font-weight: 800;
+  font-size: clamp(44px, 7vw, 84px); line-height: 0.95; letter-spacing: -0.02em; text-wrap: balance;
+}
+.role {
+  margin: 0; font-family: var(--display); font-stretch: 62%; font-weight: 600;
+  font-size: clamp(22px, 2.6vw, 30px); line-height: 1.15; text-transform: uppercase; letter-spacing: 0.04em;
+}
+.role span { color: var(--accent); }
+.lede { margin: 0; max-width: 34em; color: var(--muted); font-size: 17px; }
+.actions { display: flex; flex-wrap: wrap; gap: 12px; }
+.btn {
+  display: inline-flex; align-items: center; gap: 8px; padding: 11px 18px; border-radius: 4px;
+  font: 500 14px/1 var(--body); text-decoration: none; border: 1px solid var(--line); background: var(--surface); color: var(--fg);
+  cursor: pointer;
+}
+.btn.primary { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+.btn:hover { border-color: var(--fg); }
+
+.viewport {
+  position: relative; min-width: 0; aspect-ratio: 4 / 3; max-width: 100%;
+  background: var(--viewport); border: 1px solid var(--line); border-radius: 6px; overflow: hidden;
+}
+.viewport canvas { display: block; width: 100%; height: 100%; touch-action: pan-y; cursor: crosshair; }
+.hud {
+  position: absolute; left: 12px; top: 10px; font-family: var(--mono); font-size: 11px; color: var(--muted);
+  pointer-events: none; line-height: 1.5; font-variant-numeric: tabular-nums;
+}
+.hud-hint {
+  position: absolute; right: 12px; bottom: 10px; font-family: var(--mono); font-size: 11px; color: var(--muted); pointer-events: none;
+}
+
+/* ---------- sections ---------- */
+section { padding-block: 64px; border-top: 1px solid var(--line); display: flex; flex-direction: column; gap: 32px; }
+.sec-head { display: flex; flex-direction: column; gap: 10px; max-width: 44em; }
+h2 {
+  margin: 0; font-family: var(--display); font-stretch: 110%; font-weight: 700;
+  font-size: clamp(28px, 3.4vw, 40px); line-height: 1.05; letter-spacing: -0.01em; text-wrap: balance;
+}
+h3 { margin: 0; font-family: var(--display); font-stretch: 100%; font-weight: 700; font-size: 22px; line-height: 1.2; text-wrap: balance; }
+.sec-head p { margin: 0; color: var(--muted); }
+
+/* placeholder slots: everything still to fill in */
+.slot {
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; text-align: center;
+  padding: 16px; border: 1.5px dashed var(--line); border-radius: 6px; background: var(--surface);
+  color: var(--muted); font-family: var(--mono); font-size: 12px; line-height: 1.45; max-width: 100%;
+}
+.slot strong { font-weight: 500; color: var(--fg); text-transform: uppercase; letter-spacing: 0.08em; font-size: 11px; }
+.r169 { aspect-ratio: 16 / 9; }
+.r43 { aspect-ratio: 4 / 3; }
+.todo {
+  font-family: var(--mono); font-size: 11px; color: var(--muted); border: 1px dashed var(--line);
+  padding: 2px 7px; border-radius: 3px; white-space: nowrap;
+}
+
+/* showreel */
+.reel { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; }
+.reel .slot { gap: 14px; }
+.play {
+  width: 64px; height: 64px; border-radius: 50%; border: 1.5px solid var(--muted);
+  display: grid; place-items: center;
+}
+.play::after { content: ""; border-left: 18px solid var(--muted); border-top: 11px solid transparent; border-bottom: 11px solid transparent; margin-left: 5px; }
+.reel-meta { display: flex; flex-wrap: wrap; gap: 8px 20px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
+
+/* projects */
+.project {
+  display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: 40px;
+  padding-block: 8px 40px; border-bottom: 1px solid var(--line);
+}
+.project:last-child { border-bottom: 0; padding-bottom: 0; }
+.p-text { min-width: 0; display: flex; flex-direction: column; gap: 14px; }
+.p-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.p-role { color: var(--accent); font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; }
+.p-text ul { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 8px; }
+.p-text li::marker { color: var(--muted); }
+.p-media { min-width: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; align-content: start; }
+.p-media .wide { grid-column: 1 / -1; }
+
+.chain {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-family: var(--mono); font-size: 12px;
+}
+.chain span { padding: 3px 8px; border: 1px solid var(--line); border-radius: 3px; background: var(--surface); }
+.chain i { font-style: normal; color: var(--muted); }
+.modules { display: flex; flex-wrap: wrap; gap: 6px; }
+.modules span { font-family: var(--mono); font-size: 12px; padding: 3px 9px; border-radius: 999px; background: var(--viewport); }
+.label { font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); }
+
+/* tools */
+.tools { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); gap: 20px; }
+.tool { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.tool h3 { font-size: 18px; }
+.tool p { margin: 0; color: var(--muted); font-size: 15px; }
+.tool code { font-family: var(--mono); font-size: 12px; color: var(--fg); }
+
+/* skills */
+.skills { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: 28px 36px; }
+.skill-group { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.skill-group ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.skill-group li { font-size: 14px; padding: 4px 10px; border: 1px solid var(--line); border-radius: 3px; background: var(--surface); }
+
+/* about */
+.about { display: grid; grid-template-columns: minmax(0, 220px) minmax(0, 1fr); gap: 40px; align-items: start; }
+.about .slot { border-radius: 50%; aspect-ratio: 1; }
+.facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 24px; }
+.fact { display: flex; flex-direction: column; gap: 6px; }
+.fact p { margin: 0; }
+.about-text { display: flex; flex-direction: column; gap: 24px; min-width: 0; }
+.about-text > p { margin: 0; max-width: 40em; }
+
+/* contact */
+.contact { display: flex; flex-direction: column; gap: 24px; }
+.mail-row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+.mail {
+  font-family: var(--display); font-stretch: 100%; font-weight: 700; font-size: clamp(22px, 4vw, 40px);
+  letter-spacing: -0.01em; user-select: all; word-break: break-all;
+}
+.links { display: flex; flex-wrap: wrap; gap: 10px; }
+.copied { font-family: var(--mono); font-size: 12px; color: var(--accent); }
+
+footer {
+  border-top: 1px solid var(--line); padding-block: 24px 40px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px;
+  font-family: var(--mono); font-size: 12px; color: var(--muted);
+}
+
+@media (max-width: 860px) {
+  .hero { grid-template-columns: minmax(0, 1fr); gap: 32px; padding-block: 40px 48px; }
+  .project { grid-template-columns: minmax(0, 1fr); gap: 24px; }
+  .about { grid-template-columns: minmax(0, 1fr); }
+  .about .slot { width: 160px; }
+  section { padding-block: 48px; }
+}
+@media (max-width: 480px) {
+  .p-media { grid-template-columns: minmax(0, 1fr); }
+  .bar nav { gap: 16px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  * { scroll-behavior: auto !important; }
+}
+html { scroll-behavior: smooth; }
+</style>
+
+<div class="page">
+  <header class="bar">
+    <a class="mark" href="#top"><b>alvaro_cano</b>_CTRL</a>
+    <nav aria-label="Sections">
+      <a href="#work">Work</a>
+      <a href="#tools">Tools</a>
+      <a href="#skills">Skills</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <div class="hero" id="top">
+    <div class="hero-text">
+      <span class="eyebrow">Character rigging · Maya · Python</span>
+      <h1>Álvaro Cano</h1>
+      <p class="role">Rigger <span>·</span> Tool Developer</p>
+      <p class="lede">I build modular, guide-based autorig systems for Maya, written entirely in Python. Biped and quadruped rigs with a clean, matrix-based node graph, plus PySide2 tools that speed up the whole team.</p>
+      <div class="actions">
+        <a class="btn primary" href="#reel">Watch showreel</a>
+        <a class="btn" href="#" data-todo="cv">Download CV <span class="todo">add link</span></a>
+        <a class="btn" href="#" data-todo="github">GitHub <span class="todo">add link</span></a>
+      </div>
+    </div>
+    <div class="viewport" aria-label="Interactive two-bone IK arm. Move the pointer over it to drag the wrist control.">
+      <canvas id="ik"></canvas>
+      <div class="hud" id="hud">L_arm_IK · reach 0.00</div>
+      <div class="hud-hint">persp · drag the wrist</div>
+    </div>
+  </div>
+
+  <section id="reel">
+    <div class="sec-head">
+      <span class="eyebrow">Showreel</span>
+      <h2>Rigging reel <span class="todo">add year</span></h2>
+    </div>
+    <div class="reel">
+      <a class="slot r169" href="#" data-todo="reel" style="text-decoration:none">
+        <span class="play" aria-hidden="true"></span>
+        <strong>Showreel video</strong>
+        Paste the YouTube or Vimeo link here
+      </a>
+      <div class="reel-meta">
+        <span>Duration <span class="todo">0:00</span></span>
+        <span>Breakdown <span class="todo">add PDF or shot list</span></span>
+      </div>
+    </div>
+  </section>
+
+  <section id="work">
+    <div class="sec-head">
+      <span class="eyebrow">Selected work</span>
+      <h2>Rigs in production</h2>
+      <p>Student short films where I owned or collaborated on the rigging department.</p>
+    </div>
+
+    <article class="project">
+      <div class="p-text">
+        <div class="p-meta"><span class="p-role">Lead Rigger &amp; Tool Developer</span><span class="todo">add year</span></div>
+        <h3>La Monja Gitana</h3>
+        <ul>
+          <li>Supervised and organised the rigging department.</li>
+          <li>Built a guide-based modular autorig in Python for both bipeds and quadrupeds, with guides saved and loaded as JSON.</li>
+          <li>Designed a user-friendly PySide2 interface: pick the modules and features you want, and the build constructs only those.</li>
+          <li>IK/FK limbs with quaternion blending, soft IK, space switching, ribbon twist on motion paths and a full facial setup.</li>
+        </ul>
+        <span class="label">Control hierarchy</span>
+        <div class="chain" aria-label="Control hierarchy: GRP, SPC, OFF, SDK, ANIM">
+          <span>GRP</span><i>›</i><span>SPC</span><i>›</i><span>OFF</span><i>›</i><span>SDK</span><i>›</i><span>ANIM</span>
+        </div>
+        <span class="label">Modules</span>
+        <div class="modules">
+          <span>Spine</span><span>Neck</span><span>Arm</span><span>Leg</span><span>Fingers</span><span>Toes</span><span>Eyes</span><span>Jaw</span><span>Mouth</span><span>Brows</span>
+        </div>
+      </div>
+      <div class="p-media">
+        <div class="slot r169 wide"><strong>Image / GIF</strong>Main character rig in the viewport</div>
+        <div class="slot r43"><strong>Image / GIF</strong>Horse rig</div>
+        <div class="slot r43"><strong>Image / GIF</strong>Autorig UI</div>
+      </div>
+    </article>
+
+    <article class="project">
+      <div class="p-text">
+        <div class="p-meta"><span class="p-role">Collaborator Rigger</span><span class="todo">add year</span></div>
+        <h3>Stigma</h3>
+        <ul>
+          <li>Crowd character rigs built on mGear.</li>
+          <li>Custom attributes so animators could vary each crowd member quickly.</li>
+        </ul>
+      </div>
+      <div class="p-media">
+        <div class="slot r169 wide"><strong>Image / GIF</strong>Crowd rigs</div>
+      </div>
+    </article>
+
+    <article class="project">
+      <div class="p-text">
+        <div class="p-meta"><span class="p-role">Collaborator Rigger</span><span class="todo">add year</span></div>
+        <h3>Encore</h3>
+        <ul>
+          <li>Drum kit rig with deformers on the drum skins.</li>
+          <li>IK points on the cymbals to make hits and wobble easier to animate.</li>
+        </ul>
+      </div>
+      <div class="p-media">
+        <div class="slot r169 wide"><strong>Image / GIF</strong>Drum kit rig</div>
+      </div>
+    </article>
+  </section>
+
+  <section id="tools">
+    <div class="sec-head">
+      <span class="eyebrow">Tools</span>
+      <h2>Pipeline tools</h2>
+      <p>Small Python and PySide2 utilities written for the La Monja Gitana production.</p>
+    </div>
+    <div class="tools">
+      <div class="tool">
+        <div class="slot r169"><strong>GIF</strong>Tool in use</div>
+        <h3>Color Override Tool</h3>
+        <p>A 32-swatch palette that sets the override color on any selected control in one click.</p>
+      </div>
+      <div class="tool">
+        <div class="slot r169"><strong>GIF</strong>Tool in use</div>
+        <h3>Toggle Rotation Axis</h3>
+        <p>Shows or hides local rotation axes across the selection to check joint orientation fast.</p>
+      </div>
+      <div class="tool">
+        <div class="slot r169"><strong>GIF</strong>Tool in use</div>
+        <h3>Lock &amp; Hide Attributes</h3>
+        <p>Locks and hides channels on controls in bulk so animators only see what they should key.</p>
+      </div>
+      <div class="tool">
+        <div class="slot r169"><strong>GIF</strong>Tool in use</div>
+        <h3>Playblast Overlay</h3>
+        <p>Layout playblasts with a custom burn-in and pipeline naming (<code>LMG_</code> prefix) applied automatically.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="skills">
+    <div class="sec-head">
+      <span class="eyebrow">Skills</span>
+      <h2>What I work with</h2>
+    </div>
+    <div class="skills">
+      <div class="skill-group">
+        <span class="label">Rigging</span>
+        <ul><li>Autorig</li><li>Body mechanics</li><li>Facial rig</li><li>Quadruped rig</li><li>IK/FK</li><li>Soft IK</li><li>Space switching</li><li>Twist &amp; ribbons</li><li>Skinning</li></ul>
+      </div>
+      <div class="skill-group">
+        <span class="label">Node graph</span>
+        <ul><li>Matrix rigging</li><li>offsetParentMatrix</li><li>aimMatrix</li><li>uvPin</li><li>motionPath</li><li>blendShapes</li></ul>
+      </div>
+      <div class="skill-group">
+        <span class="label">Programming</span>
+        <ul><li>Python</li><li>maya.cmds</li><li>PySide2 / Qt</li><li>OOP</li><li>JSON</li><li>UI design</li><li>VEX</li></ul>
+      </div>
+      <div class="skill-group">
+        <span class="label">Software</span>
+        <ul><li>Maya</li><li>mGear</li><li>Houdini</li><li>VS Code</li></ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="sec-head">
+      <span class="eyebrow">About</span>
+      <h2>Rigger who writes the tools too</h2>
+    </div>
+    <div class="about">
+      <div class="slot"><strong>Photo</strong>Portrait</div>
+      <div class="about-text">
+        <p>I'm a 3D Animation and VFX student focused on rigging and technical direction. I like building systems that other people can use without reading the code: a rig that animators trust and a tool that saves the next artist an afternoon.</p>
+        <div class="facts">
+          <div class="fact">
+            <span class="label">Education</span>
+            <p>Bachelor's Degree in 3D Animation and VFX<br>La Salle, Universitat Ramon Llull · 2023–2027</p>
+          </div>
+          <div class="fact">
+            <span class="label">Languages</span>
+            <p>Spanish (native) · Catalan (native) · English (B2)</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="sec-head">
+      <span class="eyebrow">Contact</span>
+      <h2>Open to rigging and tool development roles</h2>
+    </div>
+    <div class="contact">
+      <div class="mail-row">
+        <span class="mail" id="mail">acpradillo@gmail.com</span>
+        <button class="btn" id="copy" type="button">Copy email</button>
+        <span class="copied" id="copied" hidden>Copied</span>
+      </div>
+      <div class="links">
+        <a class="btn" href="#" data-todo="linkedin">LinkedIn <span class="todo">add link</span></a>
+        <a class="btn" href="#" data-todo="github">GitHub <span class="todo">add link</span></a>
+        <a class="btn" href="#" data-todo="artstation">ArtStation <span class="todo">add link</span></a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <span>© 2026 Álvaro Cano</span>
+    <span>Rigged in Maya · Scripted in Python</span>
+  </footer>
+</div>
+
+<script>
+// copy email
+(function () {
+  var btn = document.getElementById('copy'), ok = document.getElementById('copied'), mail = document.getElementById('mail');
+  btn.addEventListener('click', function () {
+    var text = mail.textContent.trim();
+    function selectIt() { var r = document.createRange(); r.selectNodeContents(mail); var s = getSelection(); s.removeAllRanges(); s.addRange(r); }
+    try {
+      navigator.clipboard.writeText(text).then(function () { ok.hidden = false; setTimeout(function () { ok.hidden = true; }, 1600); }, selectIt);
+    } catch (e) { selectIt(); }
+  });
+  // placeholder links do nothing until filled in
+  document.querySelectorAll('[data-todo]').forEach(function (a) {
+    if (a.getAttribute('href') === '#') a.addEventListener('click', function (e) { e.preventDefault(); });
+  });
+})();
+
+// two-bone IK viewport
+(function () {
+  var cv = document.getElementById('ik'), ctx = cv.getContext('2d'), hud = document.getElementById('hud');
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var W = 0, H = 0, dpr = 1, pointer = null, cur = null, t0 = performance.now(), raf = 0;
+
+  function size() {
+    var r = cv.getBoundingClientRect(); dpr = Math.min(window.devicePixelRatio || 1, 2);
+    W = r.width; H = r.height; cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  function tok(n) { return getComputedStyle(document.documentElement).getPropertyValue(n).trim(); }
+
+  function frame(now) {
+    var c = { fg: tok('--fg'), muted: tok('--muted'), line: tok('--line'), acc: tok('--accent'), r: tok('--ctl-r'), y: tok('--ctl-c') };
+    ctx.clearRect(0, 0, W, H);
+
+    // viewport grid
+    var g = 28; ctx.lineWidth = 1; ctx.strokeStyle = c.line; ctx.beginPath();
+    for (var x = (W / 2) % g; x < W; x += g) { ctx.moveTo(x + 0.5, 0); ctx.lineTo(x + 0.5, H); }
+    for (var y = (H * 0.72) % g; y < H; y += g) { ctx.moveTo(0, y + 0.5); ctx.lineTo(W, y + 0.5); }
+    ctx.stroke();
+
+    var S = { x: W * 0.3, y: H * 0.36 }, L1 = Math.min(W, H) * 0.29, L2 = L1 * 0.95, R = L1 + L2;
+    var P = { x: S.x + L1 * 0.85, y: S.y + L1 * 1.25 };   // pole vector position
+
+    var tt = (now - t0) / 1000;
+    var idle = { x: S.x + R * 0.55 + Math.cos(tt * 0.6) * R * 0.38, y: S.y + R * 0.15 + Math.sin(tt * 0.9) * R * 0.32 };
+    var want = pointer || idle;
+    if (!cur) cur = { x: want.x, y: want.y };
+    var k = reduce ? 1 : 0.14; cur.x += (want.x - cur.x) * k; cur.y += (want.y - cur.y) * k;
+
+    // solve
+    var dx = cur.x - S.x, dy = cur.y - S.y, d = Math.hypot(dx, dy) || 0.001;
+    var dc = Math.max(Math.abs(L1 - L2) + 1, Math.min(R - 0.01, d));
+    var base = Math.atan2(dy, dx);
+    var a = Math.acos(Math.max(-1, Math.min(1, (L1 * L1 + dc * dc - L2 * L2) / (2 * L1 * dc))));
+    var e1 = { x: S.x + L1 * Math.cos(base + a), y: S.y + L1 * Math.sin(base + a) };
+    var e2 = { x: S.x + L1 * Math.cos(base - a), y: S.y + L1 * Math.sin(base - a) };
+    var E = Math.hypot(e1.x - P.x, e1.y - P.y) < Math.hypot(e2.x - P.x, e2.y - P.y) ? e1 : e2;
+    var Wr = { x: S.x + dx / d * dc, y: S.y + dy / d * dc };
+
+    // pole vector annotation
+    ctx.setLineDash([4, 4]); ctx.strokeStyle = c.y; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(E.x, E.y); ctx.lineTo(P.x, P.y); ctx.stroke(); ctx.setLineDash([]);
+    ctx.lineWidth = 1.6; ctx.beginPath();
+    var s = 7; ctx.moveTo(P.x, P.y - s); ctx.lineTo(P.x + s, P.y); ctx.lineTo(P.x, P.y + s); ctx.lineTo(P.x - s, P.y); ctx.closePath();
+    ctx.moveTo(P.x - s * 1.6, P.y); ctx.lineTo(P.x + s * 1.6, P.y); ctx.moveTo(P.x, P.y - s * 1.6); ctx.lineTo(P.x, P.y + s * 1.6);
+    ctx.stroke();
+
+    // bones (Maya-style tapered)
+    function bone(A, B) {
+      var vx = B.x - A.x, vy = B.y - A.y, l = Math.hypot(vx, vy), nx = -vy / l, ny = vx / l, w = 6, o = 8;
+      var sx = A.x + vx / l * o, sy = A.y + vy / l * o, ex = B.x - vx / l * o, ey = B.y - vy / l * o;
+      ctx.beginPath(); ctx.moveTo(sx + nx * w, sy + ny * w); ctx.lineTo(ex, ey); ctx.lineTo(sx - nx * w, sy - ny * w); ctx.closePath(); ctx.stroke();
+    }
+    function joint(J) { ctx.beginPath(); ctx.arc(J.x, J.y, 7, 0, Math.PI * 2); ctx.stroke(); }
+    ctx.strokeStyle = c.fg; ctx.lineWidth = 1.4;
+    bone(S, E); bone(E, Wr); joint(S); joint(E); joint(Wr);
+
+    // shoulder (center-yellow root square) and wrist IK control (left-blue circle)
+    ctx.strokeStyle = c.y; ctx.lineWidth = 1.8; ctx.strokeRect(S.x - 16, S.y - 16, 32, 32);
+    ctx.strokeStyle = c.acc; ctx.lineWidth = 2.2; ctx.beginPath(); ctx.arc(cur.x, cur.y, 22, 0, Math.PI * 2); ctx.stroke();
+    ctx.beginPath(); ctx.arc(cur.x, cur.y, 2.5, 0, Math.PI * 2); ctx.fillStyle = c.acc; ctx.fill();
+
+    // labels
+    ctx.font = '11px "IBM Plex Mono", ui-monospace, monospace'; ctx.fillStyle = c.muted;
+    ctx.fillText('L_shoulder_JNT', S.x - 40, S.y - 26);
+    ctx.fillText('L_elbow_JNT', E.x + 12, E.y + (E.y > S.y ? 18 : -12));
+    ctx.fillText('L_wrist_IK_CTRL', Math.min(cur.x + 28, W - 110), cur.y + 4);
+    ctx.fillText('L_arm_PV_CTRL', Math.min(P.x + 14, W - 100), P.y + 22);
+
+    hud.textContent = 'L_arm_IK · reach ' + Math.min(1, d / R).toFixed(2) + (d > R ? ' · max' : '');
+
+    if (!reduce || pointer) raf = requestAnimationFrame(frame);
+  }
+
+  function pos(e) { var r = cv.getBoundingClientRect(); return { x: e.clientX - r.left, y: e.clientY - r.top }; }
+  cv.addEventListener('pointermove', function (e) { pointer = pos(e); if (reduce) { cancelAnimationFrame(raf); raf = requestAnimationFrame(frame); } });
+  cv.addEventListener('pointerdown', function (e) { pointer = pos(e); });
+  cv.addEventListener('pointerleave', function () { pointer = null; if (reduce) requestAnimationFrame(frame); });
+
+  size();
+  if ('ResizeObserver' in window) new ResizeObserver(function () { size(); if (reduce) requestAnimationFrame(frame); }).observe(cv);
+  raf = requestAnimationFrame(frame);
+  matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function () { if (reduce) requestAnimationFrame(frame); });
+})();
+</script>
