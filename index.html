@@ -23,6 +23,8 @@ img { max-width: 100%; height: auto; display: block; }
   --ctl-r: #c93434;      /* right-side control red */
   --ctl-c: #b98a00;      /* center control yellow */
   --code-bg: #f1f3f7;
+  --glow: rgba(29, 91, 208, 0.30);      /* blue shadow behind media */
+  --glow-soft: rgba(29, 91, 208, 0.14);
   --code-str: #2f7d4f;
   --code-fn: #8a3fb8;
   --display: "Archivo", "Helvetica Neue", Arial, sans-serif;
@@ -31,12 +33,12 @@ img { max-width: 100%; height: auto; display: block; }
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --code-bg: #0f1216; --code-str: #7fcf9c; --code-fn: #c99bf0; --bg: #13161b; --surface: #1a1e25; --viewport: #1c2129; --fg: #e8ebf0; --muted: #9aa3b1;
+    --code-bg: #0f1216; --code-str: #7fcf9c; --code-fn: #c99bf0; --glow: rgba(107, 155, 245, 0.42); --glow-soft: rgba(107, 155, 245, 0.18); --bg: #13161b; --surface: #1a1e25; --viewport: #1c2129; --fg: #e8ebf0; --muted: #9aa3b1;
     --line: #2b313b; --accent: #6b9bf5; --ctl-r: #f07070; --ctl-c: #f0c64a; color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
-  --code-bg: #0f1216; --code-str: #7fcf9c; --code-fn: #c99bf0; --bg: #13161b; --surface: #1a1e25; --viewport: #1c2129; --fg: #e8ebf0; --muted: #9aa3b1;
+  --code-bg: #0f1216; --code-str: #7fcf9c; --code-fn: #c99bf0; --glow: rgba(107, 155, 245, 0.42); --glow-soft: rgba(107, 155, 245, 0.18); --bg: #13161b; --surface: #1a1e25; --viewport: #1c2129; --fg: #e8ebf0; --muted: #9aa3b1;
   --line: #2b313b; --accent: #6b9bf5; --ctl-r: #f07070; --ctl-c: #f0c64a; color-scheme: dark;
 }
 
@@ -127,6 +129,16 @@ h3 { margin: 0; font-family: var(--display); font-stretch: 100%; font-weight: 70
 .r169 { aspect-ratio: 16 / 9; }
 .media { display: block; width: 100%; max-width: 100%; height: auto; object-fit: cover; border-radius: 6px; border: 1px solid var(--line); background: var(--viewport); }
 .media.contain { object-fit: contain; }
+/* depth: a soft blue halo under every image, video and viewport */
+.media, .video, .viewport, .embargo {
+  box-shadow: 0 24px 50px -16px var(--glow), 0 0 32px -6px var(--glow-soft);
+}
+.tool .media, .p-media .media { transition: transform .25s ease, box-shadow .25s ease; }
+.tool .media:hover, .p-media .media:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 32px 62px -16px var(--glow), 0 0 40px -4px var(--glow-soft);
+}
+@media (prefers-reduced-motion: reduce) { .tool .media:hover, .p-media .media:hover { transform: none; } }
 .r43 { aspect-ratio: 4 / 3; }
 .todo {
   font-family: var(--mono); font-size: 11px; color: var(--muted); border: 1px dashed var(--line);
@@ -189,6 +201,12 @@ h3 { margin: 0; font-family: var(--display); font-stretch: 100%; font-weight: 70
 .script[open] summary::before { transform: rotate(90deg); }
 .script summary:hover { color: var(--accent); }
 .script summary:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; border-radius: 6px; }
+.script-link {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap; padding: 10px 14px;
+  font-size: 14px; font-weight: 500; text-decoration: none;
+}
+.script-link::before { content: "↳"; font-family: var(--mono); color: var(--accent); }
+.script-link:hover { color: var(--accent); border-color: var(--accent); }
 .script .file { font-family: var(--mono); font-size: 11px; font-weight: 400; color: var(--muted); }
 .code-bar { display: flex; gap: 8px; padding: 0 14px 10px; }
 .code-btn {
@@ -403,14 +421,9 @@ html { scroll-behavior: smooth; }
         <video class="media r169" src="img/toollockhide.mp4" autoplay muted loop playsinline preload="metadata" aria-label="Lock and Hide Attributes tool in use"></video>
         <h3>Lock &amp; Hide Attributes</h3>
         <p>Locks and hides channels on controls in bulk so animators only see what they should key.</p>
-        <details class="script" data-src="scripts/lock_hide_attributes.py">
-          <summary>View script <span class="file">lock_hide_attributes.py</span></summary>
-          <div class="code-bar">
-            <button class="code-btn" type="button" data-copy>Copy</button>
-            <a class="code-btn" href="scripts/lock_hide_attributes.py" download>Download .py</a>
-          </div>
-          <pre><code class="language-python">Loading…</code></pre>
-        </details>
+        <a class="script script-link" href="https://github.com/alvaroCano-IKFK/La-monja-gitana-autorig" target="_blank" rel="noopener">
+          <span>Built into the autorig</span> <span class="file">View on GitHub ↗</span>
+        </a>
       </div>
     </div>
   </section>
@@ -448,7 +461,7 @@ html { scroll-behavior: smooth; }
     <div class="about">
       <img class="portrait" src="img/portrait.jpg" alt="Portrait of Álvaro Cano">
       <div class="about-text">
-        <p>I'm character TD focused on rigging and FX. I like building systems that other people can use without reading the code: a rig that animators trust and a tool that saves the next artist an afternoon.</p>
+        <p>I'm a character TD focused on rigging and FX. I like building systems that other people can use without reading the code: a rig that animators trust and a tool that saves the next artist an afternoon.</p>
         <div class="facts">
           <div class="fact">
             <span class="label">Education</span>
