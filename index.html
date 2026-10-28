@@ -22,18 +22,21 @@ img { max-width: 100%; height: auto; display: block; }
   --accent: #1d5bd0;     /* left-side control blue */
   --ctl-r: #c93434;      /* right-side control red */
   --ctl-c: #b98a00;      /* center control yellow */
+  --code-bg: #f1f3f7;
+  --code-str: #2f7d4f;
+  --code-fn: #8a3fb8;
   --display: "Archivo", "Helvetica Neue", Arial, sans-serif;
   --body: "Archivo", "Helvetica Neue", Arial, sans-serif;
   --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg: #13161b; --surface: #1a1e25; --viewport: #1c2129; --fg: #e8ebf0; --muted: #9aa3b1;
+    --code-bg: #0f1216; --code-str: #7fcf9c; --code-fn: #c99bf0; --bg: #13161b; --surface: #1a1e25; --viewport: #1c2129; --fg: #e8ebf0; --muted: #9aa3b1;
     --line: #2b313b; --accent: #6b9bf5; --ctl-r: #f07070; --ctl-c: #f0c64a; color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
-  --bg: #13161b; --surface: #1a1e25; --viewport: #1c2129; --fg: #e8ebf0; --muted: #9aa3b1;
+  --code-bg: #0f1216; --code-str: #7fcf9c; --code-fn: #c99bf0; --bg: #13161b; --surface: #1a1e25; --viewport: #1c2129; --fg: #e8ebf0; --muted: #9aa3b1;
   --line: #2b313b; --accent: #6b9bf5; --ctl-r: #f07070; --ctl-c: #f0c64a; color-scheme: dark;
 }
 
@@ -175,7 +178,35 @@ h3 { margin: 0; font-family: var(--display); font-stretch: 100%; font-weight: 70
 .tool { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
 .tool h3 { font-size: 18px; }
 .tool p { margin: 0; color: var(--muted); font-size: 15px; }
-.tool code { font-family: var(--mono); font-size: 12px; color: var(--fg); }
+.tools { align-items: start; }
+.script { border: 1px solid var(--line); border-radius: 6px; background: var(--surface); min-width: 0; }
+.script summary {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap; padding: 10px 14px; cursor: pointer; list-style: none;
+  font-size: 14px; font-weight: 500;
+}
+.script summary::-webkit-details-marker { display: none; }
+.script summary::before { content: "›"; font-family: var(--mono); color: var(--accent); transition: transform .15s; }
+.script[open] summary::before { transform: rotate(90deg); }
+.script summary:hover { color: var(--accent); }
+.script summary:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; border-radius: 6px; }
+.script .file { font-family: var(--mono); font-size: 11px; font-weight: 400; color: var(--muted); }
+.code-bar { display: flex; gap: 8px; padding: 0 14px 10px; }
+.code-btn {
+  font: 500 12px/1 var(--mono); padding: 6px 10px; border: 1px solid var(--line); border-radius: 3px;
+  background: var(--bg); color: var(--fg); text-decoration: none; cursor: pointer;
+}
+.code-btn:hover { border-color: var(--fg); }
+.script pre {
+  margin: 0; max-height: 420px; overflow: auto; padding: 14px; border-top: 1px solid var(--line);
+  background: var(--code-bg); color: var(--fg); font: 12px/1.6 var(--mono); tab-size: 4; border-radius: 0 0 6px 6px;
+}
+.script code { font: inherit; white-space: pre; }
+.token.comment { color: var(--muted); font-style: italic; }
+.token.string, .token.triple-quoted-string { color: var(--code-str); }
+.token.keyword, .token.boolean { color: var(--accent); font-weight: 500; }
+.token.builtin, .token.function, .token.class-name { color: var(--code-fn); }
+.token.number, .token.decorator { color: var(--ctl-c); }
+.token.operator, .token.punctuation { color: var(--muted); }
 
 /* skills */
 .skills { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: 28px 36px; }
@@ -337,8 +368,8 @@ html { scroll-behavior: smooth; }
 
   <section id="tools">
     <div class="sec-head">
-      <span class="eyebrow">Tools</span>
-      <h2>Pipeline tools</h2>
+      <span class="eyebrow">Python · PySide2</span>
+      <h2>Tools</h2>
       <p>Small Python and PySide2 utilities written for the La Monja Gitana production.</p>
     </div>
     <div class="tools">
@@ -346,16 +377,40 @@ html { scroll-behavior: smooth; }
         <img class="media r169" src="img/toolcoloroverride.gif" alt="Color Override Tool in use" loading="lazy">
         <h3>Color Override Tool</h3>
         <p>A 32-swatch palette that sets the override color on any selected control in one click.</p>
+        <details class="script" data-src="scripts/color_override_tool.py">
+          <summary>View script <span class="file">color_override_tool.py</span></summary>
+          <div class="code-bar">
+            <button class="code-btn" type="button" data-copy>Copy</button>
+            <a class="code-btn" href="scripts/color_override_tool.py" download>Download .py</a>
+          </div>
+          <pre><code class="language-python">Loading…</code></pre>
+        </details>
       </div>
       <div class="tool">
         <img class="media r169" src="img/toolrotationaxis.gif" alt="Toggle Rotation Axis tool in use" loading="lazy">
         <h3>Toggle Rotation Axis</h3>
         <p>Shows or hides local rotation axes across the selection to check joint orientation fast.</p>
+        <details class="script" data-src="scripts/toggle_rotation_axis.py">
+          <summary>View script <span class="file">toggle_rotation_axis.py</span></summary>
+          <div class="code-bar">
+            <button class="code-btn" type="button" data-copy>Copy</button>
+            <a class="code-btn" href="scripts/toggle_rotation_axis.py" download>Download .py</a>
+          </div>
+          <pre><code class="language-python">Loading…</code></pre>
+        </details>
       </div>
       <div class="tool">
         <video class="media r169" src="img/toollockhide.mp4" autoplay muted loop playsinline preload="metadata" aria-label="Lock and Hide Attributes tool in use"></video>
         <h3>Lock &amp; Hide Attributes</h3>
         <p>Locks and hides channels on controls in bulk so animators only see what they should key.</p>
+        <details class="script" data-src="scripts/lock_hide_attributes.py">
+          <summary>View script <span class="file">lock_hide_attributes.py</span></summary>
+          <div class="code-bar">
+            <button class="code-btn" type="button" data-copy>Copy</button>
+            <a class="code-btn" href="scripts/lock_hide_attributes.py" download>Download .py</a>
+          </div>
+          <pre><code class="language-python">Loading…</code></pre>
+        </details>
       </div>
     </div>
   </section>
@@ -432,7 +487,37 @@ html { scroll-behavior: smooth; }
   </footer>
 </div>
 
+<script>window.Prism = window.Prism || {}; window.Prism.manual = true;</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
 <script>
+// tool scripts: loaded from the scripts/ folder the first time each dropdown opens
+(function () {
+  document.querySelectorAll('details.script').forEach(function (d) {
+    var code = d.querySelector('code'), loaded = false;
+    d.addEventListener('toggle', function () {
+      if (!d.open || loaded) return;
+      loaded = true;
+      fetch(d.dataset.src).then(function (r) {
+        if (!r.ok) throw new Error(r.status);
+        return r.text();
+      }).then(function (txt) {
+        code.textContent = txt;
+        if (window.Prism && Prism.highlightElement) Prism.highlightElement(code);
+      }).catch(function () {
+        loaded = false;
+        code.textContent = '# Could not load ' + d.dataset.src + '\n# Check the file is in the scripts/ folder with this exact name.\n# (Scripts only load on the live site, not when opening index.html by double-click.)';
+      });
+    });
+    d.querySelector('[data-copy]').addEventListener('click', function () {
+      var btn = this, txt = code.textContent;
+      function done(label) { btn.textContent = label; setTimeout(function () { btn.textContent = 'Copy'; }, 1500); }
+      function selectIt() { var r = document.createRange(); r.selectNodeContents(code); var s = getSelection(); s.removeAllRanges(); s.addRange(r); done('Selected'); }
+      try { navigator.clipboard.writeText(txt).then(function () { done('Copied'); }, selectIt); } catch (e) { selectIt(); }
+    });
+  });
+})();
+
 // copy email
 (function () {
   var btn = document.getElementById('copy'), ok = document.getElementById('copied'), mail = document.getElementById('mail');
