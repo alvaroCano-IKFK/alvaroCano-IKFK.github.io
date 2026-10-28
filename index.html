@@ -185,7 +185,7 @@ h3 { margin: 0; font-family: var(--display); font-stretch: 100%; font-weight: 70
 
 /* about */
 .about { display: grid; grid-template-columns: minmax(0, 220px) minmax(0, 1fr); gap: 40px; align-items: start; }
-.about .slot { border-radius: 50%; aspect-ratio: 1; }
+.portrait { display: block; width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 50%; }
 .facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 24px; }
 .fact { display: flex; flex-direction: column; gap: 6px; }
 .fact p { margin: 0; }
@@ -211,7 +211,7 @@ footer {
   .hero { grid-template-columns: minmax(0, 1fr); gap: 32px; padding-block: 40px 48px; }
   .project { grid-template-columns: minmax(0, 1fr); gap: 24px; }
   .about { grid-template-columns: minmax(0, 1fr); }
-  .about .slot { width: 160px; }
+  .portrait { width: 160px; }
   section { padding-block: 48px; }
 }
 @media (max-width: 480px) {
@@ -273,7 +273,7 @@ html { scroll-behavior: smooth; }
     <div class="sec-head">
       <span class="eyebrow">Selected work</span>
       <h2>Rigs in production</h2>
-      <p>Student short films where I owned or collaborated on the rigging department.</p>
+      <p>Short films where I owned or collaborated on the rigging department.</p>
     </div>
 
     <article class="project">
@@ -391,9 +391,9 @@ html { scroll-behavior: smooth; }
       <h2>Rigger who writes the tools too</h2>
     </div>
     <div class="about">
-      <div class="slot"><strong>Photo</strong>Portrait</div>
+      <img class="portrait" src="img/portrait.jpg" alt="Portrait of Álvaro Cano">
       <div class="about-text">
-        <p>I'm a 3D Animation and VFX student focused on rigging and technical direction. I like building systems that other people can use without reading the code: a rig that animators trust and a tool that saves the next artist an afternoon.</p>
+        <p>I'm character TD focused on rigging and FX. I like building systems that other people can use without reading the code: a rig that animators trust and a tool that saves the next artist an afternoon.</p>
         <div class="facts">
           <div class="fact">
             <span class="label">Education</span>
