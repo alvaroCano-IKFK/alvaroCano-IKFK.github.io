@@ -130,7 +130,8 @@ h3 { margin: 0; font-family: var(--display); font-stretch: 100%; font-weight: 70
 
 /* showreel */
 .reel { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; }
-.reel .slot { gap: 14px; }
+.video { position: relative; aspect-ratio: 16 / 9; max-width: 100%; border-radius: 6px; overflow: hidden; background: #000; border: 1px solid var(--line); }
+.video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
 .play {
   width: 64px; height: 64px; border-radius: 50%; border: 1.5px solid var(--muted);
   display: grid; place-items: center;
@@ -159,6 +160,11 @@ h3 { margin: 0; font-family: var(--display); font-stretch: 100%; font-weight: 70
 .chain i { font-style: normal; color: var(--muted); }
 .modules { display: flex; flex-wrap: wrap; gap: 6px; }
 .src-link { font-size: 15px; font-weight: 500; color: var(--accent); text-underline-offset: 3px; }
+.embargo {
+  display: flex; flex-direction: column; justify-content: center; gap: 8px; padding: 28px; min-height: 180px;
+  border: 1px solid var(--line); border-radius: 6px; background: var(--viewport);
+}
+.embargo p { margin: 0; max-width: 32em; }
 .modules span { font-family: var(--mono); font-size: 12px; padding: 3px 9px; border-radius: 999px; background: var(--viewport); }
 .label { font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); }
 
@@ -252,17 +258,11 @@ html { scroll-behavior: smooth; }
   <section id="reel">
     <div class="sec-head">
       <span class="eyebrow">Showreel</span>
-      <h2>Rigging reel <span class="todo">add year</span></h2>
+      <h2>Rigging Reel 2026</h2>
     </div>
     <div class="reel">
-      <a class="slot r169" href="#" data-todo="reel" style="text-decoration:none">
-        <span class="play" aria-hidden="true"></span>
-        <strong>Showreel video</strong>
-        Paste the YouTube or Vimeo link here
-      </a>
-      <div class="reel-meta">
-        <span>Duration <span class="todo">0:00</span></span>
-        <span>Breakdown <span class="todo">add PDF or shot list</span></span>
+      <div class="video">
+        <iframe src="https://www.youtube-nocookie.com/embed/gXvwahPvgYc?rel=0" title="Álvaro Cano – Rigging Reel 2026" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen loading="lazy"></iframe>
       </div>
     </div>
   </section>
@@ -311,7 +311,10 @@ html { scroll-behavior: smooth; }
         </ul>
       </div>
       <div class="p-media">
-        <div class="slot r169 wide"><strong>Image / GIF</strong>Crowd rigs</div>
+        <div class="embargo wide">
+          <span class="label">Festival circuit</span>
+          <p>Stigma is currently screening at festivals, so no footage can be shared publicly yet.</p>
+        </div>
       </div>
     </article>
 
