@@ -1,10 +1,16 @@
-<title>Álvaro Cano Portfolio</title>
-<meta name="claude:viewport-fit-sides" content="cover">
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Álvaro Cano | Rigger &amp; Tool Developer</title>
 <meta name="description" content="Álvaro Cano, rigger and tool developer. Modular autorig systems in Python for Maya.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
+html, body { margin: 0; }
+img { max-width: 100%; height: auto; display: block; }
 /* Layout: one left-aligned column; hero splits text and a live IK "viewport"; projects read as rig breakdowns with image slots beside them. */
 :root {
   --bg: #eceff3;
@@ -208,6 +214,8 @@ footer {
 }
 html { scroll-behavior: smooth; }
 </style>
+</head>
+<body>
 
 <div class="page">
   <header class="bar">
@@ -528,3 +536,5 @@ html { scroll-behavior: smooth; }
   matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function () { if (reduce) requestAnimationFrame(frame); });
 })();
 </script>
+</body>
+</html>
